@@ -47,6 +47,25 @@ class ArtistIntegrationTests extends WebIntegrationTest {
     }
 
     @Test
+    void getArtistsAlbums_artistExists_returnAlbums() throws Exception {
+        mvc.perform(get("/artists/{id}/albums", 2)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[*].id", contains(1)));
+    }
+
+    @Test
+    void getArtistsAlbums_artistMissing_notFound() throws Exception {
+        mvc.perform(get("/artists/{id}/albums", 999)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void search_nameMatches_returnFromRepository() throws Exception {
         mvc.perform(get("/artists/search")
                 .queryParam("query", "artist1")

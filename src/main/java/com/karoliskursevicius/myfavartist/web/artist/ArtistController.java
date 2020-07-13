@@ -1,5 +1,6 @@
 package com.karoliskursevicius.myfavartist.web.artist;
 
+import com.karoliskursevicius.myfavartist.core.artist.Album;
 import com.karoliskursevicius.myfavartist.core.artist.Artist;
 import com.karoliskursevicius.myfavartist.core.artist.ArtistSearch;
 import com.karoliskursevicius.myfavartist.core.artist.Artists;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Karolis Kursevičius
@@ -22,6 +24,14 @@ public class ArtistController {
     @GetMapping("/{id}")
     public ResponseEntity<Artist> getArtist(@PathVariable long id) {
         return artists.byId(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/albums")
+    public ResponseEntity<Set<Album>> getArtistsAlbums(@PathVariable long id) {
+        return artists.byId(id)
+                .map(Artist::getAlbums)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
