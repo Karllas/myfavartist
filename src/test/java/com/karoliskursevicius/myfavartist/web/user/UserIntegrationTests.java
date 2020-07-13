@@ -33,6 +33,25 @@ class UserIntegrationTests extends WebIntegrationTest {
     }
 
     @Test
+    void getUsersFavouriteArtist_exists_return() throws Exception {
+        mvc.perform(get("/users/{id}/favourite-artist", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1));
+    }
+
+    @Test
+    void getUsersFavouriteArtist_missing_notFound() throws Exception {
+        mvc.perform(get("/users/{id}/favourite-artist", 2)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void saveUser_valid_created() throws Exception {
         SaveUserRequest request = new SaveUserRequest();
         request.setEmail("any@any.any");

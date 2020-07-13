@@ -1,5 +1,6 @@
 package com.karoliskursevicius.myfavartist.web.user;
 
+import com.karoliskursevicius.myfavartist.core.artist.Artist;
 import com.karoliskursevicius.myfavartist.core.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,14 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable long id) {
         return users.byId(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/favourite-artist")
+    public ResponseEntity<Artist> getUsersFavouriteArtist(@PathVariable long id) {
+        return users.byId(id)
+                .map(User::getFavouriteArtist)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

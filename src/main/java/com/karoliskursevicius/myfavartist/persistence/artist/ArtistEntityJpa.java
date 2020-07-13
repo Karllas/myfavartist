@@ -1,7 +1,6 @@
 package com.karoliskursevicius.myfavartist.persistence.artist;
 
 import com.karoliskursevicius.myfavartist.persistence.Auditable;
-import com.karoliskursevicius.myfavartist.persistence.user.UserEntityJpa;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,7 +32,4 @@ public class ArtistEntityJpa extends Auditable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "artist")
     private Set<AlbumEntityJpa> albums = new HashSet<>();
-
-    @OneToMany(mappedBy = "favouriteArtist")
-    private Set<UserEntityJpa> users = new HashSet<>();
 }
